@@ -66,10 +66,10 @@ class TencentCloud extends Platform
      * 上传一个文件
      * @access public
      * @param string $key
-     * @param string $body
+     * @param mixed $body
      * @return array
      */
-    public function putObject(string $key, string $body)
+    public function putObject(string $key, $body)
     {
         // 处理key
         $key = trim($key, '/');

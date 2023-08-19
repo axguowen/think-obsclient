@@ -56,10 +56,10 @@ class Ctyun extends Platform
      * 上传一个文件
      * @access public
      * @param string $key
-     * @param string $body
+     * @param mixed $body
      * @return array
      */
-    public function putObject(string $key, string $body)
+    public function putObject(string $key, $body)
     {
         // 返回错误
         return [null, new \Exception('暂不支持该功能')];
