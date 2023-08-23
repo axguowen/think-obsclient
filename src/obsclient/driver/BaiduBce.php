@@ -12,6 +12,7 @@
 namespace think\obsclient\driver;
 
 use think\obsclient\Platform;
+use BaiduBce\BceClientConfigOptions;
 use BaiduBce\Services\Bos\BosClient;
 
 class BaiduBce extends Platform
@@ -46,11 +47,11 @@ class BaiduBce extends Platform
     {
         // 实例化要请求产品的 client 对象
         $this->handler = new BosClient([
-            'credentials' => [
+            BceClientConfigOptions::CREDENTIALS => [
                 'accessKeyId' => $this->options['access_key'],
                 'secretAccessKey' => $this->options['secret_key'],
             ],
-            'endpoint' => $this->options['endpoint'],
+            BceClientConfigOptions::ENDPOINT => $this->options['endpoint'],
         ]);
         // 返回
         return $this;
