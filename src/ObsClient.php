@@ -93,7 +93,7 @@ class ObsClient extends Manager
      * @access public
      * @param string $name 平台的配置名
      * @param array $options 平台配置
-     * @return \think\ocpcclient\Platform
+     * @return \think\obsclient\Platform
      */
     public function platform(string $name = null, array $options = [])
     {
