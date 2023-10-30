@@ -34,4 +34,12 @@ interface PlatformInterface
      * @return array
      */
     public function listObjects(string $prefix, int $maxKeys = 10, string $marker = '');
+
+    /**
+     * 删除对象
+     * @access public
+     * @param string $key
+     * @return array
+     */
+    public function deleteObject(string $key);
 }

@@ -109,7 +109,7 @@ class BaiduBce extends Platform
                 // 起始对象键标记
 				BosOptions::MARKER => $marker,
                 // 匹配指定前缀
-				BosOptions::PREFIX => $prefix,
+				BosOptions::PREFIX => ltrim($prefix, '/'),
                 // 最大遍历出多少个对象, 一次listObjects最大支持1000
                 BosOptions::MAX_KEYS => $maxKeys,
             ]);
@@ -147,5 +147,30 @@ class BaiduBce extends Platform
         ];
         // 返回
         return [$resultData, null];
+    }
+
+    /**
+     * 删除对象
+     * @access public
+     * @param string $key
+     * @return array
+     */
+    public function deleteObject(string $key)
+    {
+        // 处理key
+        $key = trim($key, '/');
+        try{
+            $response = $this->handler->deleteObject($this->options['bucket'], ['key' => $key]);
+        } catch (\Exception $e) {
+            // 返回错误
+            return [null, $e];
+        }
+        // 操作成功
+        if($response->statuscode == 200){
+            // 返回成功
+            return ['操作成功', null];
+        }
+        // 返回错误
+        return [null, new \Exception($response->message)];
     }
 }

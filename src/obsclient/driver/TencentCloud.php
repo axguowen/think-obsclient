@@ -158,4 +158,36 @@ class TencentCloud extends Platform
         // 返回
         return [$resultData, null];
     }
+
+    /**
+     * 删除对象
+     * @access public
+     * @param string $key
+     * @return array
+     */
+    public function deleteObject(string $key)
+    {
+        // 处理key
+        $key = trim($key, '/');
+
+        try{
+            // 响应
+            $response = $this->handler->deleteObject([
+                // 存储桶
+                'Bucket' => $this->options['bucket'],
+                // 文件路径
+                'Key' => $key,
+            ]);
+        } catch (\Exception $e) {
+            // 返回错误
+            return [null, $e];
+        }
+        // 如果写入成功
+        if(isset($response['Location']) && !empty($response['Location'])){
+            // 返回成功
+            return ['删除成功', null];
+        }
+        // 返回错误信息
+        return [null, new \Exception('删除失败')];
+    }
 }

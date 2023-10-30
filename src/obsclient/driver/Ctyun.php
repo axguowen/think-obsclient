@@ -78,4 +78,16 @@ class Ctyun extends Platform
         // 返回错误
         return [null, new \Exception('暂不支持该功能')];
     }
+
+    /**
+     * 删除对象
+     * @access public
+     * @param string $key
+     * @return array
+     */
+    public function deleteObject(string $key)
+    {
+        // 返回错误
+        return [null, new \Exception('暂不支持该功能')];
+    }
 }
