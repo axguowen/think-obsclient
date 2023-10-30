@@ -173,4 +173,36 @@ class BaiduBce extends Platform
         // 返回错误
         return [null, new \Exception($response->message)];
     }
+
+    /**
+     * 批量删除对象
+     * @access public
+     * @param array $objects
+     * @return array
+     */
+    public function deleteObjects(array $objects)
+    {
+        // 要删除的对象
+        $objectsForDelete = [];
+        // 遍历对象
+        foreach($objects as $object){
+            $objectsForDelete[] = [
+                'key' => trim($object['key'], '/'),
+            ];
+        }
+
+        try{
+            $response = $this->handler->deleteMultipleObjects($this->options['bucket'], $objectsForDelete);
+        } catch (\Exception $e) {
+            // 返回错误
+            return [null, $e];
+        }
+        // 操作成功
+        if($response->statuscode == 200){
+            // 返回成功
+            return ['操作成功', null];
+        }
+        // 返回错误
+        return [null, new \Exception($response->message)];
+    }
 }

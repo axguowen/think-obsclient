@@ -42,4 +42,12 @@ interface PlatformInterface
      * @return array
      */
     public function deleteObject(string $key);
+
+    /**
+     * 批量删除对象
+     * @access public
+     * @param array $objects
+     * @return array
+     */
+    public function deleteObjects(array $objects);
 }

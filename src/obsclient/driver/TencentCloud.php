@@ -190,4 +190,41 @@ class TencentCloud extends Platform
         // 返回错误信息
         return [null, new \Exception('删除失败')];
     }
+
+    /**
+     * 批量删除对象
+     * @access public
+     * @param array $objects
+     * @return array
+     */
+    public function deleteObjects(array $objects)
+    {
+        // 要删除的对象
+        $objectsForDelete = [];
+        // 遍历对象
+        foreach($objects as $object){
+            $objectsForDelete[] = [
+                'Key' => trim($object['key'], '/'),
+            ];
+        }
+        try{
+            // 响应
+            $response = $this->handler->deleteObjects([
+                // 存储桶
+                'Bucket' => $this->options['bucket'],
+                // 对象列表
+                'Objects' => $objectsForDelete,
+            ]);
+        } catch (\Exception $e) {
+            // 返回错误
+            return [null, $e];
+        }
+        // 如果写入成功
+        if(isset($response['Location']) && !empty($response['Location'])){
+            // 返回成功
+            return ['删除成功', null];
+        }
+        // 返回错误信息
+        return [null, new \Exception('删除失败')];
+    }
 }
