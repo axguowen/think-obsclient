@@ -64,4 +64,18 @@ class Ctyun extends Platform
         // 返回错误
         return [null, new \Exception('暂不支持该功能')];
     }
+
+    /**
+     * 列出对象
+     * @access public
+     * @param string $prefix
+     * @param int $maxKeys
+     * @param string $marker
+     * @return array
+     */
+    public function listObjects(string $prefix, int $maxKeys = 10, string $marker = '')
+    {
+        // 返回错误
+        return [null, new \Exception('暂不支持该功能')];
+    }
 }

@@ -24,4 +24,14 @@ interface PlatformInterface
      * @return array
      */
     public function putObject(string $key, $body);
+
+    /**
+     * 列出对象
+     * @access public
+     * @param string $prefix
+     * @param int $maxKeys
+     * @param string $marker
+     * @return array
+     */
+    public function listObjects(string $prefix, int $maxKeys = 10, string $marker = '');
 }

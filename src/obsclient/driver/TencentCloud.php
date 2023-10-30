@@ -96,7 +96,66 @@ class TencentCloud extends Platform
                 'path' => '/' . $key,
             ], null];
         }
-       // 返回错误信息
-       return [null, new \Exception('上传失败')];
+        // 返回错误信息
+        return [null, new \Exception('上传失败')];
+    }
+
+    /**
+     * 列出对象
+     * @access public
+     * @param string $prefix
+     * @param int $maxKeys
+     * @param string $marker
+     * @return array
+     */
+    public function listObjects(string $prefix, int $maxKeys = 10, string $marker = '')
+    {
+        try{
+            // 响应
+            $response = $this->handler->listObjects([
+                // 存储桶
+                'Bucket' => $this->options['bucket'],
+                // 分隔符, 设置为/表示列出当前目录下的object, 设置为空表示列出所有的object
+                'Delimiter' => '',
+                // 编码格式
+				'EncodingType' => 'url',
+                // 起始对象键标记
+				'Marker' => $marker,
+                // 匹配指定前缀
+				'Prefix' => ltrim($prefix, '/'),
+                // 最大遍历出多少个对象, 一次listObjects最大支持1000
+				'MaxKeys' => $maxKeys,
+            ]);
+        } catch (\Exception $e) {
+            // 返回错误
+            return [null, $e];
+        }
+        
+        // 获取的object列表
+        $list = [];
+        // 如果对象为空
+        if(isset($response['Contents']) && is_array($response['Contents'])){
+            // 遍历获取的全部对象
+            foreach ( $response['Contents'] as $content ) {
+                $list[] = [
+                    'key' => $content['Key'],
+                    'lastModified' => strtotime($content['LastModified']),
+                    'eTag' => $content['ETag'],
+                    'size' => $content['Size'],
+                ];
+            }
+        }
+
+        // 要返回的数据
+        $resultData = [
+            'name' => $response['Name'],
+            'prefix' => $response['Prefix'],
+            'marker' => $response['Marker'],
+            'maxKeys' => $response['MaxKeys'],
+            'nextMarker' => $response['NextMarker'],
+            'list' => $list,
+        ];
+        // 返回
+        return [$resultData, null];
     }
 }

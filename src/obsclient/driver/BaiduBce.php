@@ -14,6 +14,7 @@ namespace think\obsclient\driver;
 use think\obsclient\Platform;
 use BaiduBce\BceClientConfigOptions;
 use BaiduBce\Services\Bos\BosClient;
+use BaiduBce\Services\Bos\BosOptions;
 
 class BaiduBce extends Platform
 {
@@ -88,5 +89,63 @@ class BaiduBce extends Platform
         }
         // 返回错误
         return [null, new \Exception($response->message)];
+    }
+
+    /**
+     * 列出对象
+     * @access public
+     * @param string $prefix
+     * @param int $maxKeys
+     * @param string $marker
+     * @return array
+     */
+    public function listObjects(string $prefix, int $maxKeys = 10, string $marker = '')
+    {
+        try{
+            // 响应
+            $response = $this->handler->listObjects($this->options['bucket'], [
+                // 分隔符, 设置为/表示列出当前目录下的object, 设置为空表示列出所有的object
+                BosOptions::DELIMITER => '',
+                // 起始对象键标记
+				BosOptions::MARKER => $marker,
+                // 匹配指定前缀
+				BosOptions::PREFIX => $prefix,
+                // 最大遍历出多少个对象, 一次listObjects最大支持1000
+                BosOptions::MAX_KEYS => $maxKeys,
+            ]);
+        } catch (\Exception $e) {
+            // 返回错误
+            return [null, $e];
+        }
+
+        // 操作失败
+        if($response->statuscode != 200){
+            // 返回成功
+            return [null, new \Exception($response->message)];
+        }
+        
+        // 获取的object列表
+        $list = [];
+        // 遍历获取的全部对象
+		foreach ( $response->contents as $content ) {
+			$list[] = [
+				'key' => $content->key,
+                'lastModified' => strtotime($content->lastModified),
+                'eTag' => $content->eTag,
+                'size' => $content->size,
+			];
+		}
+
+        // 要返回的数据
+        $resultData = [
+            'name' => $response->name,
+            'prefix' => $response->prefix,
+            'marker' => $marker,
+            'maxKeys' => $response->maxKeys,
+            'nextMarker' => $response->marker,
+            'list' => $list,
+        ];
+        // 返回
+        return [$resultData, null];
     }
 }
