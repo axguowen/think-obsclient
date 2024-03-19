@@ -63,9 +63,10 @@ class BaiduBce extends Platform
      * @access public
      * @param string $key
      * @param mixed $body
+     * @param string $contentType
      * @return array
      */
-    public function putObject(string $key, $body)
+    public function putObject(string $key, $body, $contentType = '')
     {
         // 处理key
         $key = trim($key, '/');
@@ -73,8 +74,14 @@ class BaiduBce extends Platform
         $contentLength = strlen($body);
         // 获取内容MD5值
         $contentMd5 = base64_encode(md5($body, true));
+        // 其它选项
+        $options = [];
+        // 指定了类型
+        if(!empty($contentType)){
+            $options[BosOptions::CONTENT_TYPE] = $contentType;
+        }
         try{
-            $response = $this->handler->putObject($this->options['bucket'], $key, $body, $contentLength, $contentMd5);
+            $response = $this->handler->putObject($this->options['bucket'], $key, $body, $contentLength, $contentMd5, $options);
         } catch (\Exception $e) {
             // 返回错误
             return [null, $e];

@@ -57,9 +57,10 @@ class Ctyun extends Platform
      * @access public
      * @param string $key
      * @param mixed $body
+     * @param string $contentType
      * @return array
      */
-    public function putObject(string $key, $body)
+    public function putObject(string $key, $body, $contentType = '')
     {
         // 返回错误
         return [null, new \Exception('暂不支持该功能')];

@@ -67,23 +67,30 @@ class TencentCloud extends Platform
      * @access public
      * @param string $key
      * @param mixed $body
+     * @param string $contentType
      * @return array
      */
-    public function putObject(string $key, $body)
+    public function putObject(string $key, $body, $contentType = '')
     {
         // 处理key
         $key = trim($key, '/');
 
         try{
-            // 响应
-            $response = $this->handler->putObject([
+            // 文件数据
+            $fileData = [
                 // 存储桶
                 'Bucket' => $this->options['bucket'],
                 // 文件路径
                 'Key' => $key,
                 // 文件内容
                 'Body' => $body,
-            ]);
+            ];
+            // 指定了类型
+            if(!empty($contentType)){
+                $fileData['ContentType'] = $contentType;
+            }
+            // 响应
+            $response = $this->handler->putObject($fileData);
         } catch (\Exception $e) {
             // 返回错误
             return [null, $e];

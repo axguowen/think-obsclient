@@ -21,9 +21,10 @@ interface PlatformInterface
      * @access public
      * @param string $key
      * @param mixed $body
+     * @param string $contentType
      * @return array
      */
-    public function putObject(string $key, $body);
+    public function putObject(string $key, $body, $contentType = '');
 
     /**
      * 列出对象
