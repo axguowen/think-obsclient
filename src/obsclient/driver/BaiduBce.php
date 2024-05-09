@@ -167,13 +167,13 @@ class BaiduBce extends Platform
         // 处理key
         $key = trim($key, '/');
         try{
-            $response = $this->handler->deleteObject($this->options['bucket'], ['key' => $key]);
+            $response = $this->handler->deleteObject($this->options['bucket'], $key);
         } catch (\Exception $e) {
             // 返回错误
             return [null, $e];
         }
         // 操作成功
-        if($response->statuscode == 200){
+        if($response->statuscode == 204){
             // 返回成功
             return ['操作成功', null];
         }
