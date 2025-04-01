@@ -14,8 +14,8 @@
         }
     ],
     "require": {
-        "topthink/framework": "^6.1",
-        "axguowen/baidubce-bos": "^2.0",
+        "topthink/framework": "^6.1||^8.0",
+        "axguowen/baidubce-bos": "^2.0||dev-master",
         "qcloud/cos-sdk-v5": "^2.0"
     },
     "autoload": {
